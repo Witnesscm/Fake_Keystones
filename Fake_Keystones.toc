@@ -6,7 +6,7 @@
 ## Version: @project-version@
 ## SavedVariablesPerCharacter: FakeKeystones_DB
 ## X-Curse-Project-ID: 402362
-## X-Wago-ID: Qb6mYD6P
+## X-Wago-ID: RqGZaXKd
 
 Libs\Libs.xml
 Init.lua
