@@ -19,6 +19,7 @@ if locale == "zhCN" or locale == "zhTW" then
 	L["Score"] = "分数"
 	L["Mythic Keystone"] = "史诗钥石"
 	L["Keystone Type"] = "钥石类型"
+	L["Time Trial Keystone"] = "计时赛钥石"
 	L["Timeworn Keystone"] = "弥时钥石"
 end
 

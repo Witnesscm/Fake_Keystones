@@ -17,6 +17,7 @@ ns.KeystoneItemIDs = {
 	[138019] = EXPANSION_NAME6,
 	[158923] = EXPANSION_NAME7,
 	[180653] = EXPANSION_NAME8,
+	[168195] = L["Time Trial Keystone"],
 	[187786] = L["Timeworn Keystone"],
 }
 
@@ -143,7 +144,9 @@ function Option:BuildOptions()
 				order = 5,
 				type = "range",
 				min = 2,
-				max = 35,
+				max = 2147483647,
+				softMin = 2,
+				softMax = 35,
 				step = 1,
 				width = "double"
 			},
