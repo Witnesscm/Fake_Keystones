@@ -19,8 +19,8 @@ if locale == "zhCN" or locale == "zhTW" then
 	L["Score"] = "分数"
 	L["Mythic Keystone"] = "史诗钥石"
 	L["Keystone Type"] = "钥石类型"
-	L["Time Trial Keystone"] = "计时赛钥石"
 	L["Timeworn Keystone"] = "弥时钥石"
+	L["Time Trial Keystone"] = "计时赛钥石"
 end
 
 -- ruRU by Hollicsh
@@ -42,4 +42,5 @@ if locale == "ruRU" then
 	L["Mythic Keystone"] = "Мифический ключ"
 	L["Keystone Type"] = "Тип ключей"
 	L["Timeworn Keystone"] = "Старые ключи"
+	L["Time Trial Keystone"] = "Time Trial Keystone"
 end

@@ -60,6 +60,7 @@ end
 
 function Option:UPDATE_INSTANCE_INFO(event)
 	ns.MapIDs = C_ChallengeMode.GetMapTable()
+	sort(ns.MapIDs)
 
 	local currentMap = {}
 	for _, id in ipairs(ns.MapIDs) do
@@ -144,7 +145,7 @@ function Option:BuildOptions()
 				order = 5,
 				type = "range",
 				min = 2,
-				max = 2147483647,
+				max = (2^31-1),
 				softMin = 2,
 				softMax = 35,
 				step = 1,

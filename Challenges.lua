@@ -15,7 +15,7 @@ local challenges_options = {
 			type = "toggle",
 			set = function(_, val)
 				Addon.db["challengesFrame"] = val
-				if ChallengesFrame_Update then
+				if Challenges.ChallengesUILoaded then
 					ChallengesFrame_Update(ChallengesFrame)
 				end
 			end,
@@ -34,6 +34,10 @@ local challenges_options = {
 			max = 35,
 			step = 1,
 			width = "double",
+			set = function(info, value)
+				Option:Set(info[#info], value)
+				Challenges:ChallengesFrame_Update()
+			end,
 		},
 		description2 = {
 			name = "\n"..L["Dungeons :"],
@@ -104,6 +108,7 @@ end
 
 function Challenges:ADDON_LOADED(event, addon)
 	if addon == "Blizzard_ChallengesUI" then
+		self.ChallengesUILoaded = true
 		self:SecureHook("ChallengesFrame_Update", "ChallengesFrame_Update")
 		self:UnregisterEvent(event)
 	end
@@ -151,13 +156,15 @@ local function updateGuildLevel(self)
 	self.setting = nil
 end
 
-local entries
+local guildBest
 
 function Challenges:ChallengesFrame_Update()
+	if not self.ChallengesUILoaded then return end
+
 	if not Addon.db["challengesFrame"] then
-		if entries then
-			for i = 1, #entries do
-				entries[i]:Show()
+		if guildBest then
+			for i = 1, #guildBest.entries do
+				guildBest.entries[i]:Show()
 			end
 		end
 		return
@@ -227,18 +234,24 @@ function Challenges:ChallengesFrame_Update()
 		end
 	end
 
-	if entries then
-		for i = 1, #entries do
-			if i ~= 1 then
-				entries[i]:Hide()
+	if guildBest then
+		for i = 1, #guildBest.entries do
+			local entry = guildBest.entries[i]
+			if i == 1 then
+				entry:Show()
+				entry.CharacterName:SetText("")
+				entry.Level:SetText("")
+			else
+				entry:Hide()
 			end
 		end
+
+		guildBest:Show()
 	else
 		for _, child in pairs {ChallengesFrame:GetChildren()} do
 			if child.entries and child.entries[1] and child.entries[1].CharacterName then
-				entries = child.entries
-				for i = 1, #entries do
-					local entry = entries[i]
+				for i = 1, #child.entries do
+					local entry = child.entries[i]
 					if i == 1 then
 						hooksecurefunc(entry.CharacterName, "SetText", updateGuildName)
 						hooksecurefunc(entry.Level, "SetText", updateGuildLevel)
@@ -249,6 +262,8 @@ function Challenges:ChallengesFrame_Update()
 						entry:Hide()
 					end
 				end
+
+				guildBest = child
 				break
 			end
 		end
