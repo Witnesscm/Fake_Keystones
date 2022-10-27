@@ -16,7 +16,7 @@ local challenges_options = {
 			set = function(_, val)
 				Addon.db["challengesFrame"] = val
 				if Challenges.ChallengesUILoaded then
-					ChallengesFrame_Update(ChallengesFrame)
+					ChallengesFrame:Update()
 				end
 			end,
 			width = "double",
@@ -109,7 +109,7 @@ end
 function Challenges:ADDON_LOADED(event, addon)
 	if addon == "Blizzard_ChallengesUI" then
 		self.ChallengesUILoaded = true
-		self:SecureHook("ChallengesFrame_Update", "ChallengesFrame_Update")
+		self:SecureHook(ChallengesFrame, "Update", "ChallengesFrame_Update")
 		self:UnregisterEvent(event)
 	end
 end
