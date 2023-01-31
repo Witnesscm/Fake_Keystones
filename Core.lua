@@ -57,16 +57,18 @@ function Addon:OnEnable()
 	self:LoadCurrentAffixes()
 	self:RegisterComm(ns.Prefix)
 
-	if IsAddOnLoaded("AngryKeystones") then 
-		local mod = _G.AngryKeystones.Modules.Schedule
-		if mod then
-			self:RawHook(mod, "SendCurrentKeystone", function()
+	-- AngryKeystones
+	local AngryKeystones = _G.AngryKeystones
+	if AngryKeystones then
+		local module = AngryKeystones.Modules and AngryKeystones.Modules.Schedule
+		if module and module.SendCurrentKeystone then
+			self:RawHook(module, "SendCurrentKeystone", function()
 				if self.db["angryKeystone"] then
 					self:SendKeystoneMsg()
 				else
-					self.hooks[mod].SendCurrentKeystone(mod)
+					self.hooks[module]["SendCurrentKeystone"](module)
 				end
-			end, true)
+			end)
 		end
 	else
 		self:RegisterComm(AK_Prefix)
@@ -74,10 +76,66 @@ function Addon:OnEnable()
 		self:RegisterEvent("CHALLENGE_MODE_START", "SendKeystoneMsg")
 		self:RegisterEvent("CHALLENGE_MODE_COMPLETED", "SendKeystoneMsg")
 	end
+
+	-- LibOpenRaid
+	local LibOR = LibStub("LibOpenRaid-1.0", true)
+	if LibOR then
+		self.classID = select(3, UnitClass("player"))
+		self.LibOR = LibOR
+		self:HookLibOpenRaid(LibOR)
+	end
 end
 
 function Addon:OnCommReceived(_, message, ...)
 	if string.match(message, "quest") then
 		self:SendKeystoneMsg()
+	end
+end
+
+function Addon:GetLibORKeystoneMsg()
+	local level = self.db["mythicLevel"] or 0
+	local mapID = self.db["mapId"] or 0
+	local classID = self.classID
+	local ratingSummary = C_PlayerInfo.GetPlayerMythicPlusRatingSummary("player")
+	local rating = ratingSummary and ratingSummary.currentSeasonScore or 0
+
+	return format("K,%d,0,%d,%d,%d,%d", level, mapID, classID, rating, mapID)
+end
+
+ns.CONST_COMM_CHANNEL = {
+	["PARTY"] = "0x1",
+	["RAID"] = "0x2",
+	["GUILD"] = "0x4",
+}
+
+function Addon:SendLibORKeystoneMsg(flags)
+	local SendCommData = self.LibOR.commHandler and self.LibOR.commHandler.SendCommData
+	if SendCommData then
+		SendCommData(self:GetLibORKeystoneMsg(), flags)
+	end
+end
+
+function Addon:HookLibOpenRaid(lib)
+	local KeystoneManager = lib.KeystoneInfoManager
+	if not KeystoneManager then return end
+
+	if KeystoneManager.SendPlayerKeystoneInfoToParty then
+		self:RawHook(KeystoneManager, "SendPlayerKeystoneInfoToParty", function()
+			if self.db["angryKeystone"] then
+				self:SendLibORKeystoneMsg(ns.CONST_COMM_CHANNEL["PARTY"])
+			else
+				self.hooks[KeystoneManager]["SendPlayerKeystoneInfoToParty"](KeystoneManager)
+			end
+		end)
+	end
+
+	if KeystoneManager.SendPlayerKeystoneInfoToGuild then
+		self:RawHook(KeystoneManager, "SendPlayerKeystoneInfoToGuild", function()
+			if self.db["angryKeystone"] then
+				self:SendLibORKeystoneMsg(ns.CONST_COMM_CHANNEL["GUILD"])
+			else
+				self.hooks[KeystoneManager]["SendPlayerKeystoneInfoToGuild"](KeystoneManager)
+			end
+		end)
 	end
 end

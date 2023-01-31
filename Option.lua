@@ -183,6 +183,8 @@ function Option:BuildOptions()
 				func = function()
 					Addon:PrintKeystone()
 					Addon:SendKeystoneMsg()
+					Addon:SendLibORKeystoneMsg(ns.CONST_COMM_CHANNEL["PARTY"])
+					Addon:SendLibORKeystoneMsg(ns.CONST_COMM_CHANNEL["GUILD"])
 				end
 			},
 			reset = {
