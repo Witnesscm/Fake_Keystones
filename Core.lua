@@ -109,7 +109,7 @@ ns.CONST_COMM_CHANNEL = {
 }
 
 function Addon:SendLibORKeystoneMsg(flags)
-	local SendCommData = self.LibOR.commHandler and self.LibOR.commHandler.SendCommData
+	local SendCommData = self.LibOR and self.LibOR.commHandler and self.LibOR.commHandler.SendCommData
 	if SendCommData then
 		SendCommData(self:GetLibORKeystoneMsg(), flags)
 	end
