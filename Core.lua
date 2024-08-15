@@ -40,7 +40,7 @@ function Addon:LoadCurrentAffixes()
 	if not affixes then return end
 
 	for index = 1, 4 do
-		self.db["affixId"..index] = affixes[index] and affixes[index].id
+		self.db["affixId"..index] = affixes[index] and affixes[index].id or 0
 	end
 end
 

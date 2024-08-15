@@ -7,6 +7,9 @@ local Option = Addon:NewModule("Option", "AceEvent-3.0","AceConsole-3.0")
 
 local ipairs = ipairs
 
+local OPTION_MORE_DUNGENOS = 999
+local OPTION_THIS_SEASON = OPTION_MORE_DUNGENOS + 1
+
 ns.MapIDs = {}
 ns.OldMapIDs = {}
 ns.MapList = {}
@@ -67,7 +70,7 @@ function Option:UPDATE_INSTANCE_INFO(event)
 		currentMap[id] = true
 	end
 
-	for id = 1, 500 do
+	for id = 1, 999 do
 		local name = C_ChallengeMode.GetMapUIInfo(id)
 		if name then
 			if currentMap[id] then
@@ -79,8 +82,8 @@ function Option:UPDATE_INSTANCE_INFO(event)
 		end
 	end
 
-	ns.MapList[999] = "< "..L["Old Expansion"]
-	ns.OldMapList[888] = "> ".._G["EXPANSION_NAME"..(GetNumExpansions()-1)]
+	ns.MapList[OPTION_MORE_DUNGENOS] = "< "..L["More Dungeons"]
+	ns.OldMapList[OPTION_THIS_SEASON] = "> "..ARENA_THIS_SEASON
 
 	for i = 1, 255 do
 		local name = C_ChallengeMode.GetAffixInfo(i)
@@ -128,10 +131,10 @@ function Option:BuildOptions()
 					return Addon.db["currentExpansion"] and ns.MapList or ns.OldMapList
 				end,
 				set = function(_, val)
-					if val == 888 then
+					if val == OPTION_THIS_SEASON then
 						Addon.db["currentExpansion"] = true
 						Addon.db["mapId"] = ns.MapIDs[1]
-					elseif val == 999 then
+					elseif val == OPTION_MORE_DUNGENOS then
 						Addon.db["currentExpansion"] = false
 						Addon.db["mapId"] = ns.OldMapIDs[1]
 					else
