@@ -27,7 +27,7 @@ end
 if locale == "ruRU" then
 	L["Keystone Link: "] = "Ссылка на ключ: "
 	L["Fake AngryKeystones"] = "Фейк AngryKeystones"
-	L["It will replace AngryKeystones and send keystone info to your party automatically."] = "Он заменит AngryKeystones и автоматически отправит информацию о ключе в вашу группу."
+	L["It will replace AngryKeystones and send keystone info to your party automatically."] = "Это заменит AngryKeystones и автоматически отправит информацию о ключе в Вашу группу."
 	L["Level"] = "Уровень"
 	L["Affix"] = "Аффикс"
 	L["Print"] = "Отправить"
@@ -37,10 +37,10 @@ if locale == "ruRU" then
 	L["Modify Challenges Frame"] = "Изменить рамку испытаний"
 	L["Best M+ Level"] = "Лучший уровень M+"
 	L["Dungeons: "] = "Подземелья: "
-	L["More Dungeons"] = "More Dungeons"
+	L["More Dungeons"] = "Больше подземелий"
 	L["Score"] = "Счёт"
 	L["Mythic Keystone"] = "Мифический ключ"
 	L["Keystone Type"] = "Тип ключей"
 	L["Timeworn Keystone"] = "Старые ключи"
-	L["Time Trial Keystone"] = "Time Trial Keystone"
+	L["Time Trial Keystone"] = "Ключ для испытания на время"
 end
