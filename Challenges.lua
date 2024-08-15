@@ -222,7 +222,7 @@ function Challenges:ChallengesFrame_Update()
 	ChallengesFrame.WeeklyInfo.Child.ThisWeekLabel:Show()
 	ChallengesFrame.WeeklyInfo.Child.Description:Hide()
 
-	if IsAddOnLoaded("AngryKeystones") then
+	if C_AddOns.IsAddOnLoaded("AngryKeystones") then
 		local mod = _G.AngryKeystones.Modules.Schedule
 		mod.KeystoneText:Show()
 		updateCurrentText(mod.KeystoneText)
