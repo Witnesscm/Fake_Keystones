@@ -8,7 +8,7 @@ setmetatable(L, {
 
 ns.Addon = Addon
 ns.L = L
-ns.Version = GetAddOnMetadata(ADDON, "Version")
+ns.Version = C_AddOns.GetAddOnMetadata(ADDON, "Version")
 ns.Prefix = "FakeKeystones"
 
 _G[ADDON] = ns
