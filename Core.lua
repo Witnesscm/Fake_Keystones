@@ -29,7 +29,7 @@ function Addon:GetKeystoneMsg(current)
 end
 
 function Addon:SendKeystoneMsg()
-	if not self.db["angryKeystone"] then return end
+	if not self.db["angryKeystone"] or not IsInGroup(LE_PARTY_CATEGORY_HOME) then return end
 
 	self:SendCommMessage(AK_Prefix, format(AK_Schedule, self:GetKeystoneMsg()), "PARTY")
 	self:SendCommMessage(ns.Prefix, self:GetKeystoneMsg(true), "PARTY")
