@@ -99,6 +99,10 @@ function Option:UPDATE_INSTANCE_INFO(event)
 end
 
 function Option:BuildOptions()
+	for itemID, name in pairs(ns.KeystoneItemIDs) do
+		ns.KeystoneItemIDs[itemID] = CreateSimpleTextureMarkup(C_Item.GetItemIconByID(itemID), 16, 16).." "..name
+	end
+
 	ns.Options.args["keystone"] = {
 		order = 1,
 		name = L["Mythic Keystone"],

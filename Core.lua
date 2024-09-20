@@ -55,7 +55,7 @@ function Addon:PrintKeystone()
 		affixIds = affixIds..":"..(self.db["affixId"..i] or 0)
 	end
 
-	_G.DEFAULT_CHAT_FRAME:AddMessage(L["Keystone Link: "]..format("|cffa335ee|Hkeystone:%d:%d:%d%s|h[%s]|h|r", keystoneItemID, mapId, level, affixIds, keystone))
+	_G.DEFAULT_CHAT_FRAME:AddMessage(L["Keystone Link: "]..CreateSimpleTextureMarkup(C_Item.GetItemIconByID(keystoneItemID), 16, 16)..format("|cffa335ee|Hkeystone:%d:%d:%d%s|h[%s]|h|r", keystoneItemID, mapId, level, affixIds, keystone))
 end
 
 function Addon:OnEnable()
