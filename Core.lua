@@ -22,7 +22,7 @@ function Addon:GetKeystoneMsg(current)
 
 	local message = "0"
 	if keystoneLevel and keystoneMapID then
-		message = string.format("%d:%d", keystoneMapID, keystoneLevel)
+		message = format("%d:%d", keystoneMapID, keystoneLevel)
 	end
 
 	return message
@@ -87,7 +87,7 @@ function Addon:OnEnable()
 end
 
 function Addon:OnCommReceived(_, message, ...)
-	if string.match(message, "quest") then
+	if strmatch(message, "quest") then
 		self:SendKeystoneMsg()
 	end
 end

@@ -120,11 +120,11 @@ local function updateCurrentText(self)
 	local locale = _G.AngryKeystones.Modules.Locale
 	local keystoneString = locale and locale:Get("currentKeystoneText")
 	local mapName = C_ChallengeMode.GetMapUIInfo(Addon.db["mapId"])
-	local keystoneName = mapName and string.format("%s (%d)", mapName, Addon.db["mythicLevel"])
+	local keystoneName = mapName and format("%s (%d)", mapName, Addon.db["mythicLevel"])
 
 	if keystoneName and keystoneString then
 		self.setting = true
-		self:SetText(string.format(keystoneString, keystoneName))
+		self:SetText(format(keystoneString, keystoneName))
 		self.setting = nil
 	end
 end
