@@ -154,34 +154,10 @@ function Option:BuildOptions()
 				step = 1,
 				width = "double"
 			},
-			affixId1 = {
-				name = L["Affix"].." 1",
-				order = 6,
-				type = "select",
-				values = ns.AffixList
-			},
-			affixId2 = {
-				name = L["Affix"].." 2",
-				order = 7,
-				type = "select",
-				values = ns.AffixList
-			},
-			affixId3 = {
-				name = L["Affix"].." 3",
-				order = 8,
-				type = "select",
-				values = ns.AffixList
-			},
-			affixId4 = {
-				name = L["Affix"].." 4",
-				order = 9,
-				type = "select",
-				values = ns.AffixList
-			},
 			print = {
 				name = L["Print"],
 				desc = L["Print keystone link and send keystone info."],
-				order = 10,
+				order = 20,
 				type = "execute",
 				func = function()
 					Addon:PrintKeystone()
@@ -193,7 +169,7 @@ function Option:BuildOptions()
 			reset = {
 				name = RESET,
 				desc = L["Reset to current affixes"],
-				order = 11,
+				order = 21,
 				type = "execute",
 				func = function()
 					Addon:LoadCurrentAffixes()
@@ -201,4 +177,21 @@ function Option:BuildOptions()
 			}
 		}
 	}
+
+	for i = 1, ns.NUM_AFFIXES do
+		ns.Options.args["keystone"].args["affixId"..i] = {
+			name = L["Affix"].." "..i,
+			order = 5 + i,
+			type = "select",
+			values = ns.AffixList
+		}
+	end
+
+	if ns.NUM_AFFIXES % 2 ~= 0 then
+		ns.Options.args["keystone"].args.space = {
+			name = "",
+			order = 6 + ns.NUM_AFFIXES,
+			type = "description",
+		}
+	end
 end

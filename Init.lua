@@ -10,16 +10,13 @@ ns.Addon = Addon
 ns.L = L
 ns.Version = C_AddOns.GetAddOnMetadata(ADDON, "Version")
 ns.Prefix = "FakeKeystones"
+ns.NUM_AFFIXES = 5
 
 _G[ADDON] = ns
 
 local defaults = {
 	["mapId"] = 376,
 	["mythicLevel"] = 20,
-	["affixId1"] = 9,
-	["affixId2"] = 11,
-	["affixId3"] = 4,
-	["affixId4"] = 120,
 	["angryKeystone"] = true,
 	["challengesFrame"] = false,
 	["weeklyLevel"] = 20,
@@ -27,6 +24,10 @@ local defaults = {
 	["currentExpansion"] = true,
 	["keystoneItemID"] = 180653,
 }
+
+for i = 1, ns.NUM_AFFIXES do
+	defaults["affixId"..i] = 0
+end
 
 function Addon:OnInitialize()
 	self.db = FakeKeystones_DB or {}

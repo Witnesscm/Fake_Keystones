@@ -39,18 +39,23 @@ function Addon:LoadCurrentAffixes()
 	local affixes = C_MythicPlus.GetCurrentAffixes()
 	if not affixes then return end
 
-	for index = 1, 4 do
-		self.db["affixId"..index] = affixes[index] and affixes[index].id or 0
+	for i = 1, ns.NUM_AFFIXES do
+		self.db["affixId"..i] = affixes[i] and affixes[i].id or 0
 	end
 end
 
 function Addon:PrintKeystone()
-	local mapId, level, affixId1, affixId2, affixId3, affixId4, keystoneItemID = self.db["mapId"], self.db["mythicLevel"], self.db["affixId1"], self.db["affixId2"], self.db["affixId3"], self.db["affixId4"], self.db["keystoneItemID"]
+	local mapId, level, keystoneItemID = self.db["mapId"], self.db["mythicLevel"], self.db["keystoneItemID"]
 	local mapName = C_ChallengeMode.GetMapUIInfo(mapId)
-	local keystone = mapName and string.format(CHALLENGE_MODE_KEYSTONE_HYPERLINK, mapName, level)
+	local keystone = mapName and format(CHALLENGE_MODE_KEYSTONE_HYPERLINK, mapName, level)
 	if not keystone then return end
 
-	_G.DEFAULT_CHAT_FRAME:AddMessage(L["Keystone Link: "]..string.format("|cffa335ee|Hkeystone:%d:%d:%d:%d:%d:%d:%d|h[%s]|h|r", keystoneItemID, mapId, level, affixId1, affixId2, affixId3, affixId4, keystone))
+	local affixIds = ""
+	for i = 1, ns.NUM_AFFIXES do
+		affixIds = affixIds..":"..(self.db["affixId"..i] or 0)
+	end
+
+	_G.DEFAULT_CHAT_FRAME:AddMessage(L["Keystone Link: "]..format("|cffa335ee|Hkeystone:%d:%d:%d%s|h[%s]|h|r", keystoneItemID, mapId, level, affixIds, keystone))
 end
 
 function Addon:OnEnable()
