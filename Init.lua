@@ -10,7 +10,7 @@ ns.Addon = Addon
 ns.L = L
 ns.Version = C_AddOns.GetAddOnMetadata(ADDON, "Version")
 ns.Prefix = "FakeKeystones"
-ns.NUM_AFFIXES = 5
+ns.NUM_AFFIXES = 4
 
 _G[ADDON] = ns
 
