@@ -1,4 +1,4 @@
-## Interface: 110007, 110100
+## Interface: 110100
 ## Title: Fake Keystones
 ## Author: Witness
 ## Notes: A simple addon to create fake keystone link with custom affixes. (/fks)
