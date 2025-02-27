@@ -51,7 +51,7 @@ function Addon:PrintKeystone()
 	if not keystone then return end
 
 	local affixIds = ""
-	for i = 1, ns.NUM_AFFIXES do
+	for i = 1, 5 do -- Server verification
 		affixIds = affixIds..":"..(self.db["affixId"..i] or 0)
 	end
 
