@@ -31,7 +31,7 @@ if locale == "ruRU" then
 	L["Level"] = "Уровень"
 	L["Affix"] = "Аффикс"
 	L["Print"] = "Отправить"
-	L["Print keystone link and send keystone info."] = "Линкануть ключ в чат, а также информацию о нём."
+	L["Print keystone link and send keystone info."] = "Отправить ключ в чат, а также информацию о нём."
 	L["Reset to current affixes"] = "Восстановить текущие аффиксы"
 	L["Challenges Frame"] = "Рамка испытаний"
 	L["Modify Challenges Frame"] = "Изменить рамку испытаний"
