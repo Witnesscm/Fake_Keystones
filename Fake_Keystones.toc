@@ -1,8 +1,8 @@
-## Interface: 110105, 110107
+## Interface: 110200
 ## Title: Fake Keystones
 ## Author: Witness
 ## Notes: A simple addon to create fake keystone link with custom affixes. (/fks)
-## Notes-ruRU: Позволяет отправить в чат настраиваемый фейковый ключ (/fks)
+## Notes-ruRU: Аддон, который позволяет создавать фейковый М+ ключ с кастомными аффиксами и отправлять его в чат |cFFdd2244(слэш-команда: /fks)|r
 ## Version: @project-version@
 ## IconTexture: 525134
 ## SavedVariablesPerCharacter: FakeKeystones_DB
