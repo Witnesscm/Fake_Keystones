@@ -1,0 +1,4 @@
+.vscode
+.editorconfig
+Libs/*
+!Libs/Libs.xml
