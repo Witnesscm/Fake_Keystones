@@ -338,4 +338,6 @@ function Addon:BlockBigWigsPrint()
 	C_Timer.After(30, function()
 		setprinthandler(old_print)
 	end)
+
+	self:UnregisterEvent("LOADING_SCREEN_DISABLED")
 end
