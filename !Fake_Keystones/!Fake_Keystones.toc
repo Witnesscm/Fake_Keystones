@@ -1,0 +1,9 @@
+## Interface: 120005, 120001
+## Title: Fake Keystones Loader
+## Author: Witness
+## Version: @project-version@
+## IconTexture: 525134
+## DefaultState: Enabled
+## LoadOnDemand: 0
+
+!Fake_Keystones.lua

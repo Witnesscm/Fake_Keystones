@@ -100,7 +100,7 @@ end
 
 function Option:BuildOptions()
 	for itemID, name in pairs(ns.KeystoneItemIDs) do
-		ns.KeystoneItemIDs[itemID] = CreateSimpleTextureMarkup(C_Item.GetItemIconByID(itemID), 16, 16).." "..name
+		ns.KeystoneItemIDs[itemID] = CreateSimpleTextureMarkup(C_Item.GetItemIconByID(itemID), 16, 16).." "..name..format(" (ID: %d)", itemID)
 	end
 
 	ns.Options.args["keystone"] = {
