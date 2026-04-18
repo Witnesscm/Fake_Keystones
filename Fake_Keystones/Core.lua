@@ -1,4 +1,4 @@
-local _, ns = ...
+local addonName, ns = ...
 local Addon = ns.Addon
 local L = ns.L
 
@@ -90,10 +90,14 @@ function Addon:OnEnable()
 		self:HookLibOpenRaid(LibOR)
 	end
 
+	-- LibKeystone
 	local LKS = LibStub("LibKeystone", true)
 	if LKS then
 		self:HookLibKeystone(LKS)
 	end
+
+	-- BigWigs Blocker
+	self:BlockBigWigs()
 end
 
 function Addon:OnCommReceived(_, message, ...)
@@ -170,6 +174,27 @@ function Addon:HookLibKeystone(lib)
 		if type(keyChallengeMapID) ~= "number" then
 			keyChallengeMapID = 0
 		end
+		if keyLevel == 0 and keyChallengeMapID == 0 and PlayerIsTimerunning and PlayerIsTimerunning() then
+			for currentBag = 0, 4 do -- 0=Backpack, 1/2/3/4=Bags
+				local slots = C_Container.GetContainerNumSlots(currentBag)
+				for currentSlot = 1, slots do
+					local itemID = C_Container.GetContainerItemID(currentBag, currentSlot)
+					if itemID and C_Item.IsItemKeystoneByID(itemID) then
+						local itemLink = C_Container.GetContainerItemLink(currentBag, currentSlot)
+						if type(itemLink) == "string" then
+							local _, _, _, strChallengeMapID, strLevel = strsplit(":", itemLink)
+							local challengeMapID = tonumber(strChallengeMapID)
+							local level = tonumber(strLevel)
+							if challengeMapID and level then
+								keyChallengeMapID = challengeMapID
+								keyLevel = level
+								break
+							end
+						end
+					end
+				end
+			end
+		end
 		local playerRatingSummary = C_PlayerInfo.GetPlayerMythicPlusRatingSummary("player")
 		local playerRating = 0
 		if type(playerRatingSummary) == "table" and type(playerRatingSummary.currentSeasonScore) == "number" then
@@ -228,23 +253,24 @@ function Addon:HookLibKeystone(lib)
 				throttleTable.PARTY = t
 				functionTable.PARTY()
 			elseif not timerTable.PARTY then
-				timerTable.PARTY = C_Timer.NewTimer(throttleTime, functionTable.PARTY)
+				timerTable.PARTY = C_Timer.NewTimer((throttleTime + 0.1) - (t - throttleTable.PARTY), functionTable.PARTY)
 			end
 		end
 	end
 
+	local issecretvalue = issecretvalue or function() return false end
 	local frame = lib.frame
 	if frame then
 		frame:SetScript("OnEvent", function(self, event, prefix, msg, channel, sender)
 			if event == "CHAT_MSG_ADDON" then
-				if prefix == "LibKS" and throttleTable[channel] then
+				if not issecretvalue(msg) and prefix == "LibKS" and throttleTable[channel] then
 					if msg == "R" then
 						local t = GetTime()
 						if t - throttleTable[channel] > throttleTime then
 							throttleTable[channel] = t
 							functionTable[channel]()
 						elseif not timerTable[channel] then
-							timerTable[channel] = C_Timer.NewTimer(throttleTime, functionTable[channel])
+							timerTable[channel] = C_Timer.NewTimer((throttleTime + 0.1) - (t - throttleTable[channel]), functionTable[channel])
 						end
 						return
 					end
@@ -256,7 +282,7 @@ function Addon:HookLibKeystone(lib)
 						local playerRating = tonumber(playerRatingStr)
 						if keyLevel and keyChallengeMapID and playerRating then
 							for _, func in next, callbackMap do
-								func(keyLevel, keyChallengeMapID, playerRating, Ambiguate(sender, "none"), channel)
+								securecallfunction(func, keyLevel, keyChallengeMapID, playerRating, Ambiguate(sender, "none"), channel)
 							end
 						end
 					end
@@ -275,4 +301,41 @@ function Addon:HookLibKeystone(lib)
 			end
 		end)
 	end
+end
+
+function Addon:BlockBigWigs()
+	for _, child in pairs { _G.UIParent:GetChildren() } do
+		local titleText = child.GetTitleText and child:GetTitleText()
+		if titleText then
+			local success, result = pcall(titleText.GetText, titleText)
+			if success and result == "BigWigs" then
+				for _, region in pairs({ child:GetRegions() }) do
+					if region:GetObjectType() == "FontString" and region.GetText then
+						local text = region:GetText()
+						if text and strfind(text, addonName) then
+							child:Hide()
+							break
+						end
+					end
+				end
+			end
+		end
+	end
+
+	self:RegisterEvent("LOADING_SCREEN_DISABLED", "BlockBigWigsPrint")
+end
+
+function Addon:BlockBigWigsPrint()
+	local old_print = getprinthandler()
+	setprinthandler(function(...)
+		local arg1 = ...
+		if type(arg1) == "string" and strfind(arg1, "BigWigs") and strfind(arg1, addonName) then
+			return
+		end
+		return old_print(...)
+	end)
+
+	C_Timer.After(30, function()
+		setprinthandler(old_print)
+	end)
 end
